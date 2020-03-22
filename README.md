@@ -10,6 +10,8 @@ When you start the container, you have to connect the socket of the docker deamo
 ```Docker
 docker run -v /var/run/docker.sock:/var/run/docker.sock jschmiegel/dockerstats
 ```
+
+## How to use with EFK-Stack:
 As I meantioned, I recommend using the docker container with the EFK-Stack. If you use the container this way your command should look simular to the following command:
 ```Docker
 docker run -v /var/run/docker.sock:/var/run/docker.sock --log-driver=fluentd jschmiegel/dockerstats
@@ -30,6 +32,16 @@ dockerstatscontainer:
     fluentd-max-retries: '30'
     tag: container.dockerstats
 ...
+```
+
+### Filter:
+If you need an drawf for an filter to get the cpu-usage out of the resulting json-object add the following parser and subtract in kibana (using a scripted field) the `containerPrevCpuUsage` of the `containerTotalCpuUsage` 
+```
+[PARSER]
+    Name     dockerstatscustom
+    Format   regex
+    Regex    "cpu_stats":{"cpu_usage":{"total_usage":(?<containerTotalCpuUsage>[0-9]*).*"precpu_stats":{"cpu_usage":{"total_usage":(?<containerPrevCpuUsage>[0-9]*).*"name":"(?<containerName>[^"]*)
+    Types    containerTotalCpuUsage:integer containerPrevCpuUsage:integer
 ```
 
 # How to modify the container
