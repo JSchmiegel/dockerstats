@@ -35,7 +35,7 @@ dockerstatscontainer:
 ```
 
 ### Filter:
-If you need an drawf for an filter to get the cpu-usage out of the resulting json-object add the following parser and subtract in kibana (using a scripted field) the `containerPrevCpuUsage` of the `containerTotalCpuUsage` 
+If you need a drawf for a filter to get the cpu-usage out of the resulting json-object add the following parser and subtract in kibana (using a scripted field) the `containerPrevCpuUsage` of the `containerTotalCpuUsage` 
 ```
 [PARSER]
     Name     dockerstatscustom
